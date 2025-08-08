@@ -210,5 +210,11 @@ __marimo__/
 odometry/
 # Ignore output images and generated plots
 scripts/output/
-
-
+scripts/Bundle_adjustment.py
+scripts/Feature_Tracker.py
+scripts/Multi_BA.py
+scripts/ba_input_data.npz
+scripts/debug.txt
+scripts/feature_matcher.py
+scripts/pose_estimation_2d.py
+scripts/trajectory_chaining_2D.py

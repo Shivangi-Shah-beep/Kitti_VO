@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Create target directory
 mkdir -p ~/kitti/odometry
 cd ~/kitti/odometry
 
-# Download required datasets
 #echo "Downloading color images (65 GB)..."
 #wget -c https://s3.eu-central-1.amazonaws.com/avg-kitti/data_odometry_color.zip
 
