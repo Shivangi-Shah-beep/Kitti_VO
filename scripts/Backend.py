@@ -8,7 +8,7 @@ class Backend:
         solver = g2o.BlockSolverSE3(g2o.LinearSolverCSparseSE3())
         algorithm = g2o.OptimizationAlgorithmLevenberg(solver)
         self.optimizer.set_algorithm(algorithm)
-        self.optimizer.set_verbose(True)
+        self.optimizer.set_verbose(False)
         self.pose = {}
         self.pose_vertices=set()
         self.landmarks_added=set()

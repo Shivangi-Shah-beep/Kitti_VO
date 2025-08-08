@@ -11,49 +11,6 @@ from Backend import Backend
 # import faulthandler
 # faulthandler.enable()
 
-def umeyama_alignment(X, Y, with_scale=True):
-    """
-    Umeyama alignment: finds the best-fit similarity transform (scale, rotation, translation)
-    aligning Y (estimated) to X (ground truth), both of shape (N, 3).
-    Args:
-        X (np.ndarray): Ground truth trajectory, shape (N, 3)
-        Y (np.ndarray): Estimated trajectory to be aligned, shape (N, 3)
-        with_scale (bool): If True, estimate scale; otherwise, only rigid alignment
-    Returns:
-        scale (float): Estimated scale factor
-        R (np.ndarray): 3x3 rotation matrix
-        t (np.ndarray): 3x1 translation vector
-        Y_aligned (np.ndarray): Aligned estimated trajectory, shape (N, 3)
-    """
-    Y= Y[:, :3, 3]
-    assert X.shape == Y.shape, "Input shapes must match and be Nx3."
-    n, m = X.shape
-    assert m == 3, "Points must be 3D."
-
-    mean_X = np.mean(X, axis=0)
-    mean_Y = np.mean(Y, axis=0)
-    X_c = X - mean_X
-    Y_c = Y - mean_Y
-
-    cov = (Y_c.T @ X_c) / n
-    U, D, Vt = np.linalg.svd(cov)
-    S = np.eye(m)
-    if np.linalg.det(U) * np.linalg.det(Vt) < 0:
-        S[-1, -1] = -1
-
-    R = U @ S @ Vt
-
-    if with_scale:
-        var_Y = np.var(Y_c, axis=0).sum()
-        scale = 1.0 / var_Y * np.sum(D * S.diagonal())
-    else:
-        scale = 1.0
-
-    t = mean_X - scale * R @ mean_Y
-    Y_aligned = scale * (R @ Y.T).T + t
-
-    return scale, R, t, Y_aligned
-
 def main():
 
     sequence_path = "/home/shivangi_shah/kitti/odometry/color/dataset/sequences/00"
@@ -75,7 +32,7 @@ def main():
     
     
 
-    for i in range(500):
+    for i in range(3000):
         left, right= dataset[i]
         gt_position = gt_trajectory[i]
         print(f"[GT] Frame {i}: x={gt_position[0]:.2f}, y={gt_position[1]:.2f}, z={gt_position[2]:.2f}")
